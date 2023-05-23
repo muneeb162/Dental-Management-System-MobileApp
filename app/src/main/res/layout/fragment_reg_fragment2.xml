@@ -9,61 +9,67 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
+        android:layout_marginTop="200sp"
         android:layout_marginEnd="30dp"
-        android:layout_marginTop="200sp">
+        android:orientation="vertical">
 
         <EditText
+            android:id="@+id/emailtext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:layout_marginBottom="7sp"
             android:background="@drawable/edtdesign"
-            android:hint="Enter First Name"
-            android:minHeight="48dp"
-            android:textSize="12sp"
             android:fontFamily="@font/robotomedium"
-            android:layout_marginBottom="7sp"/>
+            android:hint="Enter Your Email "
+            android:minHeight="48dp"
+            android:textSize="12sp" />
+
         <EditText
+            android:id="@+id/passtext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:layout_marginBottom="7sp"
             android:background="@drawable/edtdesign"
-            android:hint="Enter Last Name"
-            android:minHeight="48dp"
-            android:textSize="12sp"
             android:fontFamily="@font/robotomedium"
-            android:layout_marginBottom="7sp"/>
+            android:hint="Enter Your Password"
+            android:minHeight="48dp"
+            android:textSize="12sp" />
+
         <EditText
+            android:id="@+id/citytext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:background="@drawable/edtdesign"
-            android:hint="Enter Phone Number"
+            android:fontFamily="@font/robotomedium"
+            android:hint="Enter City"
             android:minHeight="48dp"
-            android:textSize="12sp"
-            android:fontFamily="@font/robotomedium"/>
+            android:textSize="12sp" />
+
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/midbutton"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btndesign"
+            android:backgroundTint="#6777ef"
             android:text="Next"
             android:textAllCaps="false"
-            android:layout_gravity="center"
-            android:background="@drawable/btndesign"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="#6777ef"
-            android:textColor="#ffff"
-            android:onClick="Onclick"/>
+            android:textColor="#ffff" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/robotomedium"
             android:layout_gravity="center"
-            android:text="Already have an Account? Log In"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/robotomedium"
+            android:text="Already have an Account? Log In" />
     </LinearLayout>
 
 </FrameLayout>

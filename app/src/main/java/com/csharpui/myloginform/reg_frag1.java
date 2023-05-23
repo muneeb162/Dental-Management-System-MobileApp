@@ -2,6 +2,8 @@ package com.csharpui.myloginform;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,10 +19,12 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -41,6 +45,7 @@ public class reg_frag1 extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 1;
 
     ImageView imageView;
+    EditText fname,lname,phoneno;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -81,20 +86,73 @@ public class reg_frag1 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reg_frag1, container, false);
-        imageView = (ImageView) view.findViewById(R.id.imageview);
+        fname = (EditText) view.findViewById(R.id.fnametext);
+        lname = (EditText) view.findViewById(R.id.lnametext);
+        phoneno = (EditText) view.findViewById(R.id.pNotext);
+        imageView = (ImageView) view.findViewById(R.id.roundImageView);
         Button button = (Button) view.findViewById(R.id.button1);
         button.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                // do something
-                Fragment fragment = new reg_fragment2();
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container,fragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
+                if (fname.getText().toString().isEmpty() ){
+                    fname.setError("First Name is required");
+                    lname.setError(null);
+                    phoneno.setError(null);
+                }
+                else if (lname.getText().toString().isEmpty()){
+                    lname.setError("Last Name is required");
+                    fname.setError(null);
+                    phoneno.setError(null);
+                }
+                else if(phoneno.getText().toString().isEmpty()){
+                        phoneno.setError("Enter Your Valid Phone Number");
+                        lname.setError(null);
+                        fname.setError(null);
+
+                    }
+                    else{
+                        if (!(fname.getText().toString().matches("^[a-zA-Z0-9]+$"))){
+                            fname.setError(null);
+                            lname.setError(null);
+                            phoneno.setError(null);
+                        Fragment fragment = new reg_fragment2();
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction()
+                                .setCustomAnimations(
+                                        R.anim.slide_in,  // enter
+                                        R.anim.fade_out,  // exit
+                                        R.anim.fade_in,   // popEnter
+                                        R.anim.slide_out  // popExit
+                                );
+                        transaction.replace(R.id.fragment_container,fragment);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                    }
+                    // do something
+
+                }
+//                else  {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext() );
+//                    builder.setTitle("AlertDialog Title")
+//                            .setMessage("Fill All Required Fields!")
+//                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    // Perform action when OK button is clicked
+//                                }
+//                            })
+//                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    // Perform action when Cancel button is clicked
+//                                    dialog.cancel();
+//                                }
+//                            });
+//
+//                    AlertDialog alertDialog = builder.create();
+//                    alertDialog.show();
+
+                }
+
         });
         TextView textView = (TextView) view.findViewById(R.id.uploadimagelink);
         textView.setOnClickListener(new View.OnClickListener() {
@@ -121,15 +179,17 @@ public class reg_frag1 extends Fragment {
             // Do something with the selected image URI
             // For example, display the image in an ImageView
             //imageView.setImageURI(selectedImageUri);
-            Bitmap bitmap = null;
-            try {
-                bitmap = BitmapFactory.decodeStream(requireActivity().getContentResolver().openInputStream(Uri.parse(selectedImageUri.toString())));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            Bitmap ovalBitmap = getOvalBitmap(bitmap);
+           // Bitmap bitmap = null;
+            //try {
+              //  bitmap = BitmapFactory.decodeStream(requireActivity().getContentResolver().openInputStream(Uri.parse(selectedImageUri.toString())));
+           // } catch (FileNotFoundException e) {
+                //e.printStackTrace();
+            //}
+            //Bitmap ovalBitmap = getOvalBitmap(bitmap);
             imageView.setBackground(null);
-            imageView.setImageBitmap(ovalBitmap);
+            //imageView.setImageBitmap(selectedImageUri);
+            imageView.setImageURI(selectedImageUri);
+
         }
     }
     private Bitmap getOvalBitmap(Bitmap bitmap) {
