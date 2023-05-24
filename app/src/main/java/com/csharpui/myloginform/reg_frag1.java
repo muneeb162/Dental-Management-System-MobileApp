@@ -3,32 +3,21 @@ package com.csharpui.myloginform;
 import static android.app.Activity.RESULT_OK;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
-
-import java.io.FileNotFoundException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,13 +33,14 @@ public class reg_frag1 extends Fragment {
 
     private static final int PICK_IMAGE_REQUEST = 1;
 
-    ImageView imageView;
     EditText fname,lname,phoneno;
+    RadioButton maleradbtn,femaleradbtn;
+    ImageView imageView;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    Button b1;
+
     public reg_frag1() {
         // Required empty public constructor
     }
@@ -89,35 +79,33 @@ public class reg_frag1 extends Fragment {
         fname = (EditText) view.findViewById(R.id.fnametext);
         lname = (EditText) view.findViewById(R.id.lnametext);
         phoneno = (EditText) view.findViewById(R.id.pNotext);
+        maleradbtn = (RadioButton) view.findViewById(R.id.maleradiobtn);
+        femaleradbtn = (RadioButton) view.findViewById(R.id.femaleradiobtn);
         imageView = (ImageView) view.findViewById(R.id.roundImageView);
+        //filter();
         Button button = (Button) view.findViewById(R.id.button1);
         button.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View v)
-            {
-                if (fname.getText().toString().isEmpty() ){
-                    fname.setError("First Name is required");
+            public void onClick(View v) {
+                if (!(maleradbtn.isChecked() || femaleradbtn.isChecked())) {
+                    new AlertDialog.Builder(v.getContext())
+                            .setTitle("Field Required")
+                            .setMessage("Please Select Gender")
+                            .setIcon(R.drawable.horse)
+                            .setPositiveButton("OK",null).show();
                     lname.setError(null);
-                    phoneno.setError(null);
-                }
-                else if (lname.getText().toString().isEmpty()){
-                    lname.setError("Last Name is required");
                     fname.setError(null);
                     phoneno.setError(null);
-                }
-                else if(phoneno.getText().toString().isEmpty()){
-                        phoneno.setError("Enter Your Valid Phone Number");
-                        lname.setError(null);
-                        fname.setError(null);
 
-                    }
-                    else{
-                        if (!(fname.getText().toString().matches("^[a-zA-Z0-9]+$"))){
-                            fname.setError(null);
-                            lname.setError(null);
-                            phoneno.setError(null);
-                        Fragment fragment = new reg_fragment2();
+                }
+                else {
+                    boolean isallfieldschecked = validate();
+                    if (isallfieldschecked) {
+                        fname.setError(null);
+                        lname.setError(null);
+                        phoneno.setError(null);
+                        Fragment fragment = new reg_fragment3();
                         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction()
                                 .setCustomAnimations(
                                         R.anim.slide_in,  // enter
@@ -125,33 +113,12 @@ public class reg_frag1 extends Fragment {
                                         R.anim.fade_in,   // popEnter
                                         R.anim.slide_out  // popExit
                                 );
-                        transaction.replace(R.id.fragment_container,fragment);
+                        transaction.replace(R.id.fragment_container, fragment);
                         transaction.addToBackStack(null);
                         transaction.commit();
                     }
-                    // do something
-
                 }
-//                else  {
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext() );
-//                    builder.setTitle("AlertDialog Title")
-//                            .setMessage("Fill All Required Fields!")
-//                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    // Perform action when OK button is clicked
-//                                }
-//                            })
-//                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    // Perform action when Cancel button is clicked
-//                                    dialog.cancel();
-//                                }
-//                            });
-//
-//                    AlertDialog alertDialog = builder.create();
-//                    alertDialog.show();
-
-                }
+            }
 
         });
         TextView textView = (TextView) view.findViewById(R.id.uploadimagelink);
@@ -163,7 +130,112 @@ public class reg_frag1 extends Fragment {
         });
         return view;
     }
+    private boolean validate(){
+        if (fname.length() == 0) {
+            fname.setError("This field is required");
+            lname.setError(null);
+            phoneno.setError(null);
+            return false;
+        }
 
+        if (lname.length() == 0) {
+            lname.setError("This field is required");
+            fname.setError(null);
+            phoneno.setError(null);
+            return false;
+        }
+
+        if (phoneno.length() == 0) {
+            phoneno.setError("Phone Number is required");
+            lname.setError(null);
+            fname.setError(null);
+            return false;
+        } else if (phoneno.length() < 11) {
+            phoneno.setError("Phone Number must be minimum 11 digits");
+            lname.setError(null);
+            fname.setError(null);
+            return false;
+        }
+        // after all validation return true.
+        return true;
+        }
+// private void filter() {
+//     fname.addTextChangedListener(new TextWatcher() {
+//         @Override
+//         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//         }
+//
+//         @Override
+//         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//         }
+//
+//         @Override
+//         public void afterTextChanged(Editable s) {
+//             String input = s.toString();
+//
+//             // Remove any digits from the input
+//             String filteredText = input.replaceAll("[0-9]", "");
+//
+//             if (!input.equals(filteredText)) {
+//                 fname.setText(filteredText);
+//                 fname.setSelection(filteredText.length());
+//
+//             }
+//         }
+//     });
+//     lname.addTextChangedListener(new TextWatcher() {
+//         @Override
+//         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//         }
+//
+//         @Override
+//         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//         }
+//
+//         @Override
+//         public void afterTextChanged(Editable s) {
+//             String input = s.toString();
+//
+//             // Remove any digits from the input
+//             String filteredText = input.replaceAll("[0-9]", "");
+//
+//             if (!input.equals(filteredText)) {
+//                 lname.setText(filteredText);
+//                 lname.setSelection(filteredText.length());
+//
+//             }
+//         }
+//     });
+//     phoneno.addTextChangedListener(new TextWatcher() {
+//         @Override
+//         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//         }
+//
+//         @Override
+//         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//         }
+//
+//         @Override
+//         public void afterTextChanged(Editable s) {
+//             String input = s.toString();
+//
+//             // Remove any digits from the input
+//             String filteredText = input.replaceAll("[A-Za-z]", "");
+//
+//             if (!input.equals(filteredText)) {
+//                 phoneno.setText(filteredText);
+//                 phoneno.setSelection(filteredText.length());
+//
+//             }
+//         }
+//     });
+// }
     private void openFileExplorer() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");  // Set the MIME type to select only image files
@@ -176,35 +248,9 @@ public class reg_frag1 extends Fragment {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             Uri selectedImageUri = data.getData();
 
-            // Do something with the selected image URI
-            // For example, display the image in an ImageView
-            //imageView.setImageURI(selectedImageUri);
-           // Bitmap bitmap = null;
-            //try {
-              //  bitmap = BitmapFactory.decodeStream(requireActivity().getContentResolver().openInputStream(Uri.parse(selectedImageUri.toString())));
-           // } catch (FileNotFoundException e) {
-                //e.printStackTrace();
-            //}
-            //Bitmap ovalBitmap = getOvalBitmap(bitmap);
             imageView.setBackground(null);
-            //imageView.setImageBitmap(selectedImageUri);
             imageView.setImageURI(selectedImageUri);
 
         }
     }
-    private Bitmap getOvalBitmap(Bitmap bitmap) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-        Paint paint = new Paint();
-        Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        RectF rectF = new RectF(rect);
-        float radius = bitmap.getWidth() / 2f;
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        canvas.drawOval(rectF, paint);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-        return output;
-    }
-
 }

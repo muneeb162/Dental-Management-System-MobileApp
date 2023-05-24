@@ -13,10 +13,10 @@ import android.widget.EditText;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link reg_fragment2#newInstance} factory method to
+ * Use the {@link loginfragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class reg_fragment2 extends Fragment {
+public class loginfragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,8 +26,8 @@ public class reg_fragment2 extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    EditText email,pass;
-    public reg_fragment2() {
+    EditText lemail,lpass;
+    public loginfragment() {
         // Required empty public constructor
     }
 
@@ -37,11 +37,11 @@ public class reg_fragment2 extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment reg_fragment2.
+     * @return A new instance of fragment loginfragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static reg_fragment2 newInstance(String param1, String param2) {
-        reg_fragment2 fragment = new reg_fragment2();
+    public static loginfragment newInstance(String param1, String param2) {
+        loginfragment fragment = new loginfragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -62,10 +62,12 @@ public class reg_fragment2 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_reg_fragment2, container, false);
-        Button button = (Button) view.findViewById(R.id.midbutton);
-        email = (EditText) view.findViewById(R.id.emailtext);
-        pass = (EditText) view.findViewById(R.id.passtext);
+        View view = inflater.inflate(R.layout.fragment_loginfragment, container, false);
+        lemail = (EditText) view.findViewById(R.id.loginemailtext);
+        lpass = (EditText) view.findViewById(R.id.loginpasstext);
+        
+
+        Button button = (Button) view.findViewById(R.id.loginbutton);
         button.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -73,14 +75,14 @@ public class reg_fragment2 extends Fragment {
             {
                 boolean isallfieldschecked = validate();
                 if (isallfieldschecked) {
-                    email.setError(null);
-                    pass.setError(null);
-                    Fragment fragment = new loginfragment();
+                    lemail.setError(null);
+                    lpass.setError(null);
+                    Fragment fragment = new reg_fragment2();
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction()
                             .setCustomAnimations(
-                                    R.anim.slide_in,  // enter
-                                    R.anim.fade_out,  // exit
                                     R.anim.fade_in,   // popEnter
+                                    R.anim.fade_out,  // exit
+                                    R.anim.slide_in,  // enter
                                     R.anim.slide_out  // popExit
                             );
                     transaction.replace(R.id.fragment_container, fragment);
@@ -92,15 +94,15 @@ public class reg_fragment2 extends Fragment {
         return view;
     }
     private boolean validate(){
-        if (email.length() == 0) {
-            email.setError("This field is required");
-            pass.setError(null);
+        if (lemail.length() == 0) {
+            lemail.setError("This field is required");
+            lpass.setError(null);
             return false;
         }
 
-        if (pass.length() == 0) {
-            pass.setError("This field is required");
-            email.setError(null);
+        if (lpass.length() == 0) {
+            lpass.setError("This field is required");
+            lemail.setError(null);
             return false;
         }
         // after all validation return true.

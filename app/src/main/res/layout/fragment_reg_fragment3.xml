@@ -15,6 +15,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginTop="200sp">
+
         <EditText
             android:id="@+id/citytext"
             android:layout_width="match_parent"
@@ -25,7 +26,6 @@
             android:minHeight="48dp"
             android:textSize="12sp"
             android:fontFamily="@font/robotomedium"/>
-
         <EditText
         android:id="@+id/statetext"
         android:layout_width="match_parent"
@@ -68,14 +68,6 @@
             android:layout_marginTop="20dp"
             android:backgroundTint="#6777ef"
             android:textColor="#ffff" />
-        <TextView
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/robotomedium"
-            android:layout_gravity="center"
-            android:text="Already have an Account? Log In"
-            android:layout_marginTop="10dp"/>
 
     </LinearLayout>
 </FrameLayout>
