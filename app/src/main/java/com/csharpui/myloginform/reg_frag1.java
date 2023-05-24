@@ -3,13 +3,17 @@ package com.csharpui.myloginform;
 import static android.app.Activity.RESULT_OK;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -84,20 +89,23 @@ public class reg_frag1 extends Fragment {
         imageView = (ImageView) view.findViewById(R.id.roundImageView);
         //filter();
         Button button = (Button) view.findViewById(R.id.button1);
-        button.setOnClickListener(new View.OnClickListener()
-        {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!(maleradbtn.isChecked() || femaleradbtn.isChecked())) {
-                    new AlertDialog.Builder(v.getContext())
-                            .setTitle("Field Required")
-                            .setMessage("Please Select Gender")
-                            .setIcon(R.drawable.horse)
-                            .setPositiveButton("OK",null).show();
+//                    new AlertDialog.Builder(v.getContext())
+//                            .setTitle("Field Required")
+//                            .setMessage("Please Select Gender")
+//                            .setIcon(R.drawable.horse)
+//                            .setPositiveButton("OK",null).show();
+                    Toast.makeText(view.getContext(), "Please Select Gender", Toast.LENGTH_SHORT).show();
+
                     lname.setError(null);
                     fname.setError(null);
                     phoneno.setError(null);
-
+                }
+                else  if(imageView.getDrawable() == null){
+                    Toast.makeText(view.getContext(),"Please Select Image",Toast.LENGTH_SHORT).show();
                 }
                 else {
                     boolean isallfieldschecked = validate();
@@ -105,7 +113,7 @@ public class reg_frag1 extends Fragment {
                         fname.setError(null);
                         lname.setError(null);
                         phoneno.setError(null);
-                        Fragment fragment = new reg_fragment3();
+                        Fragment fragment = new reg_fragment2();
                         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction()
                                 .setCustomAnimations(
                                         R.anim.slide_in,  // enter
@@ -128,6 +136,14 @@ public class reg_frag1 extends Fragment {
                 openFileExplorer();
             }
         });
+        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        String encodedImage = sharedPreferences.getString("imageUri", null);
+        if (encodedImage != null) {
+            // Set the retrieved bitmap to your ImageView in the first fragment or use it as needed
+            setImage(Uri.parse(encodedImage));
+       }
+        setback();
+
         return view;
     }
     private boolean validate(){
@@ -159,87 +175,22 @@ public class reg_frag1 extends Fragment {
         // after all validation return true.
         return true;
         }
-// private void filter() {
-//     fname.addTextChangedListener(new TextWatcher() {
-//         @Override
-//         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//         }
-//
-//         @Override
-//         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//         }
-//
-//         @Override
-//         public void afterTextChanged(Editable s) {
-//             String input = s.toString();
-//
-//             // Remove any digits from the input
-//             String filteredText = input.replaceAll("[0-9]", "");
-//
-//             if (!input.equals(filteredText)) {
-//                 fname.setText(filteredText);
-//                 fname.setSelection(filteredText.length());
-//
-//             }
-//         }
-//     });
-//     lname.addTextChangedListener(new TextWatcher() {
-//         @Override
-//         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//         }
-//
-//         @Override
-//         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//         }
-//
-//         @Override
-//         public void afterTextChanged(Editable s) {
-//             String input = s.toString();
-//
-//             // Remove any digits from the input
-//             String filteredText = input.replaceAll("[0-9]", "");
-//
-//             if (!input.equals(filteredText)) {
-//                 lname.setText(filteredText);
-//                 lname.setSelection(filteredText.length());
-//
-//             }
-//         }
-//     });
-//     phoneno.addTextChangedListener(new TextWatcher() {
-//         @Override
-//         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//         }
-//
-//         @Override
-//         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//         }
-//
-//         @Override
-//         public void afterTextChanged(Editable s) {
-//             String input = s.toString();
-//
-//             // Remove any digits from the input
-//             String filteredText = input.replaceAll("[A-Za-z]", "");
-//
-//             if (!input.equals(filteredText)) {
-//                 phoneno.setText(filteredText);
-//                 phoneno.setSelection(filteredText.length());
-//
-//             }
-//         }
-//     });
-// }
+
     private void openFileExplorer() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");  // Set the MIME type to select only image files
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
+    public void setImage(Uri bitmap) {
+        // Set the bitmap to your ImageView or use it as needed
+        imageView.setImageURI(bitmap);
+    }
+    public void setback() {
+        // Set the bitmap to your ImageView or use it as needed
+        if(imageView.getDrawable()!=null){
+            imageView.setBackground(null);
+        }
+
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -250,7 +201,11 @@ public class reg_frag1 extends Fragment {
 
             imageView.setBackground(null);
             imageView.setImageURI(selectedImageUri);
-
+            // Assuming you have the Image URI stored in a variable named "imageUri"
+            SharedPreferences sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("imageUri", selectedImageUri.toString());
+            editor.apply();
         }
     }
 }

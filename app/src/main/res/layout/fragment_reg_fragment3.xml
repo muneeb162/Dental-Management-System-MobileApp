@@ -16,16 +16,7 @@
         android:layout_marginEnd="30dp"
         android:layout_marginTop="200sp">
 
-        <EditText
-            android:id="@+id/citytext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/edtdesign"
-            android:hint="Enter City"
-            android:minHeight="48dp"
-            android:textSize="12sp"
-            android:fontFamily="@font/robotomedium"/>
+
         <EditText
         android:id="@+id/statetext"
         android:layout_width="match_parent"

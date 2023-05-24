@@ -2,14 +2,19 @@ package com.csharpui.myloginform;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +32,7 @@ public class reg_fragment2 extends Fragment {
     private String mParam1;
     private String mParam2;
     EditText email,pass;
+    Spinner city;
     public reg_fragment2() {
         // Required empty public constructor
     }
@@ -66,6 +72,14 @@ public class reg_fragment2 extends Fragment {
         Button button = (Button) view.findViewById(R.id.midbutton);
         email = (EditText) view.findViewById(R.id.emailtext);
         pass = (EditText) view.findViewById(R.id.passtext);
+        city = (Spinner) view.findViewById(R.id.citytext);
+
+        String[] options = {"Select an option", "Option 1", "Option 2", "Option 3"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, options);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        city.setAdapter(adapter);
+        city.setSelection(0);
+
         button.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -92,6 +106,7 @@ public class reg_fragment2 extends Fragment {
         return view;
     }
     private boolean validate(){
+
         if (email.length() == 0) {
             email.setError("This field is required");
             pass.setError(null);
