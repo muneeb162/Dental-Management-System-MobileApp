@@ -15,8 +15,14 @@
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginTop="83sp">
-
+        android:layout_marginTop="80sp">
+        <TextView
+            android:id="@+id/imageerror"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:gravity="center"
+            android:textColor="#FF0000" />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -76,13 +82,19 @@
             android:minHeight="48dp"
             android:textSize="12sp"
             android:fontFamily="@font/robotomedium"/>
-
+        <TextView
+            android:id="@+id/t2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            android:textColor="#FF0000"
+            android:textSize="10sp"/>
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginTop="5dp">
+            >
 
             <RadioButton
                 android:id="@+id/maleradiobtn"
@@ -104,7 +116,7 @@
             android:textAllCaps="false"
             android:layout_gravity="center"
             android:background="@drawable/btndesign"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="8dp"
             android:backgroundTint="#6777ef"
             android:textColor="#ffff"/>
         <TextView
@@ -113,7 +125,7 @@
             android:fontFamily="@font/robotomedium"
             android:layout_gravity="center"
             android:text="Already have an Account? Log In"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="5dp"/>
     </LinearLayout>
 
 </FrameLayout>

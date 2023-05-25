@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +37,7 @@ public class reg_fragment2 extends Fragment {
     private String mParam2;
     EditText email,pass;
     Spinner city;
+    TextView t1;
     public reg_fragment2() {
         // Required empty public constructor
     }
@@ -73,7 +78,7 @@ public class reg_fragment2 extends Fragment {
         email = (EditText) view.findViewById(R.id.emailtext);
         pass = (EditText) view.findViewById(R.id.passtext);
         city = (Spinner) view.findViewById(R.id.citytext);
-
+        t1 = (TextView) view.findViewById(R.id.t1);
         String[] options = {"Select an option", "Option 1", "Option 2", "Option 3"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, options);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -106,9 +111,26 @@ public class reg_fragment2 extends Fragment {
         return view;
     }
     private boolean validate(){
+        int spinnerselecteditempos = city.getSelectedItemPosition();
+        if(!(spinnerselecteditempos > 0)){
+            t1.setVisibility(View.VISIBLE);
+            t1.setText("This field is required");
+        }
 
+        if(email.length() == 0 && pass.length() == 0 && spinnerselecteditempos == 0){
+            email.setError("This field is required");
+            pass.setError("This field is required");
+            t1.setVisibility(View.VISIBLE);
+            t1.setText("This field is required");
+            return false;
+        }
         if (email.length() == 0) {
             email.setError("This field is required");
+            pass.setError(null);
+            return false;
+        }
+        if (!(Patterns.EMAIL_ADDRESS.matcher(email.getText()).matches())) {
+            email.setError("Invalid Email Address");
             pass.setError(null);
             return false;
         }

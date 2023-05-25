@@ -41,6 +41,7 @@ public class reg_frag1 extends Fragment {
     EditText fname,lname,phoneno;
     RadioButton maleradbtn,femaleradbtn;
     ImageView imageView;
+    TextView t1,t2;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -84,6 +85,8 @@ public class reg_frag1 extends Fragment {
         fname = (EditText) view.findViewById(R.id.fnametext);
         lname = (EditText) view.findViewById(R.id.lnametext);
         phoneno = (EditText) view.findViewById(R.id.pNotext);
+        t1 = (TextView) view.findViewById(R.id.imageerror);
+        t2 = (TextView) view.findViewById(R.id.t2);
         maleradbtn = (RadioButton) view.findViewById(R.id.maleradiobtn);
         femaleradbtn = (RadioButton) view.findViewById(R.id.femaleradiobtn);
         imageView = (ImageView) view.findViewById(R.id.roundImageView);
@@ -92,23 +95,7 @@ public class reg_frag1 extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!(maleradbtn.isChecked() || femaleradbtn.isChecked())) {
-//                    new AlertDialog.Builder(v.getContext())
-//                            .setTitle("Field Required")
-//                            .setMessage("Please Select Gender")
-//                            .setIcon(R.drawable.horse)
-//                            .setPositiveButton("OK",null).show();
-                    Toast.makeText(view.getContext(), "Please Select Gender", Toast.LENGTH_SHORT).show();
-
-                    lname.setError(null);
-                    fname.setError(null);
-                    phoneno.setError(null);
-                }
-                else  if(imageView.getDrawable() == null){
-                    Toast.makeText(view.getContext(),"Please Select Image",Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    boolean isallfieldschecked = validate();
+                    boolean isallfieldschecked = validate(view);
                     if (isallfieldschecked) {
                         fname.setError(null);
                         lname.setError(null);
@@ -126,8 +113,6 @@ public class reg_frag1 extends Fragment {
                         transaction.commit();
                     }
                 }
-            }
-
         });
         TextView textView = (TextView) view.findViewById(R.id.uploadimagelink);
         textView.setOnClickListener(new View.OnClickListener() {
@@ -146,7 +131,33 @@ public class reg_frag1 extends Fragment {
 
         return view;
     }
-    private boolean validate(){
+    private boolean validate(View view){
+        if(fname.length() == 0 && lname.length() == 0 && phoneno.length() == 0 && imageView.getDrawable() == null && !(maleradbtn.isChecked() || femaleradbtn.isChecked())){
+            fname.setError("This field is required");
+            lname.setError("This field is required");
+            phoneno.setError("This field is required");
+            t1.setVisibility(View.VISIBLE);
+            t1.setText("Image is not selected");
+            t2.setVisibility(View.VISIBLE);
+            t2.setText("Gender is not selected");
+            return false;
+        }
+        if (!(maleradbtn.isChecked() || femaleradbtn.isChecked())) {
+//                    new AlertDialog.Builder(v.getContext())
+//                            .setTitle("Field Required")
+//                            .setMessage("Please Select Gender")
+//                            .setIcon(R.drawable.horse)
+//                            .setPositiveButton("OK",null).show();
+            Toast.makeText(view.getContext(), "Please Select Gender", Toast.LENGTH_SHORT).show();
+
+            lname.setError(null);
+            fname.setError(null);
+            phoneno.setError(null);
+        }
+        if(imageView.getDrawable() == null){
+            Toast.makeText(view.getContext(),"Please Select Image",Toast.LENGTH_SHORT).show();
+        }
+
         if (fname.length() == 0) {
             fname.setError("This field is required");
             lname.setError(null);
