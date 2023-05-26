@@ -42,6 +42,7 @@ public class reg_frag1 extends Fragment {
     RadioButton maleradbtn,femaleradbtn;
     ImageView imageView;
     TextView t1,t2;
+    public boolean k = false;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -103,12 +104,12 @@ public class reg_frag1 extends Fragment {
                         Fragment fragment = new reg_fragment2();
                         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction()
                                 .setCustomAnimations(
-                                        R.anim.slide_in,  // enter
-                                        R.anim.fade_out,  // exit
                                         R.anim.fade_in,   // popEnter
+                                        R.anim.fade_out,  // exit
+                                        R.anim.slide_in,  // enter
                                         R.anim.slide_out  // popExit
                                 );
-                        transaction.replace(R.id.fragment_container, fragment);
+                       // transaction.replace(R.id.fragment_container, fragment);
                         transaction.addToBackStack(null);
                         transaction.commit();
                     }
@@ -121,17 +122,18 @@ public class reg_frag1 extends Fragment {
                 openFileExplorer();
             }
         });
-        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        String encodedImage = sharedPreferences.getString("imageUri", null);
-        if (encodedImage != null) {
-            // Set the retrieved bitmap to your ImageView in the first fragment or use it as needed
-            setImage(Uri.parse(encodedImage));
-       }
-        setback();
-
+        if(k==true){
+            SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+            String encodedImage = sharedPreferences.getString("imageUri", null);
+            if (encodedImage != null) {
+                // Set the retrieved bitmap to your ImageView in the first fragment or use it as needed
+                setImage(Uri.parse(encodedImage));
+            }
+        }
         return view;
     }
     private boolean validate(View view){
+        boolean res = true;
         if(fname.length() == 0 && lname.length() == 0 && phoneno.length() == 0 && imageView.getDrawable() == null && !(maleradbtn.isChecked() || femaleradbtn.isChecked())){
             fname.setError("This field is required");
             lname.setError("This field is required");
@@ -140,51 +142,49 @@ public class reg_frag1 extends Fragment {
             t1.setText("Image is not selected");
             t2.setVisibility(View.VISIBLE);
             t2.setText("Gender is not selected");
-            return false;
+            res = false;
         }
-        if (!(maleradbtn.isChecked() || femaleradbtn.isChecked())) {
-//                    new AlertDialog.Builder(v.getContext())
-//                            .setTitle("Field Required")
-//                            .setMessage("Please Select Gender")
-//                            .setIcon(R.drawable.horse)
-//                            .setPositiveButton("OK",null).show();
-            Toast.makeText(view.getContext(), "Please Select Gender", Toast.LENGTH_SHORT).show();
-
-            lname.setError(null);
-            fname.setError(null);
-            phoneno.setError(null);
-        }
-        if(imageView.getDrawable() == null){
-            Toast.makeText(view.getContext(),"Please Select Image",Toast.LENGTH_SHORT).show();
-        }
-
         if (fname.length() == 0) {
             fname.setError("This field is required");
-            lname.setError(null);
-            phoneno.setError(null);
-            return false;
+            res = false;
         }
-
+        else{
+            fname.setError(null);
+        }
         if (lname.length() == 0) {
             lname.setError("This field is required");
-            fname.setError(null);
-            phoneno.setError(null);
-            return false;
+            res = false;
         }
-
+        else{
+            lname.setError(null);
+        }
         if (phoneno.length() == 0) {
-            phoneno.setError("Phone Number is required");
-            lname.setError(null);
-            fname.setError(null);
-            return false;
-        } else if (phoneno.length() < 11) {
-            phoneno.setError("Phone Number must be minimum 11 digits");
-            lname.setError(null);
-            fname.setError(null);
-            return false;
+            phoneno.setError("This field is required");
+            res = false;
+        }
+        else {
+            if (phoneno.length() < 11) {
+                phoneno.setError("Phone Number must be minimum 11 digits");
+                res = false;
+            } else {
+                phoneno.setError(null);
+            }
+        }
+        if (!(maleradbtn.isChecked() || femaleradbtn.isChecked())) {
+            t2.setVisibility(View.VISIBLE);
+            t2.setText("Gender is not selected");
+            res = false;
+        }
+        else{
+            t2.setVisibility(View.INVISIBLE);
+        }
+        if(imageView.getDrawable() == null){
+            t1.setVisibility(View.VISIBLE);
+            t1.setText("Image is not selected");
+            res = false;
         }
         // after all validation return true.
-        return true;
+        return res;
         }
 
     private void openFileExplorer() {
@@ -196,13 +196,8 @@ public class reg_frag1 extends Fragment {
         // Set the bitmap to your ImageView or use it as needed
         imageView.setImageURI(bitmap);
     }
-    public void setback() {
-        // Set the bitmap to your ImageView or use it as needed
-        if(imageView.getDrawable()!=null){
-            imageView.setBackground(null);
-        }
 
-    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -212,11 +207,13 @@ public class reg_frag1 extends Fragment {
 
             imageView.setBackground(null);
             imageView.setImageURI(selectedImageUri);
+            t1.setVisibility(View.INVISIBLE);
             // Assuming you have the Image URI stored in a variable named "imageUri"
             SharedPreferences sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("imageUri", selectedImageUri.toString());
             editor.apply();
+            k=true;
         }
     }
 }

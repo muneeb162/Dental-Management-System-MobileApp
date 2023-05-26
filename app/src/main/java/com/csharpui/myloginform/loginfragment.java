@@ -85,7 +85,7 @@ public class loginfragment extends Fragment {
                                     R.anim.slide_in,  // enter
                                     R.anim.slide_out  // popExit
                             );
-                    transaction.replace(R.id.fragment_container, fragment);
+                    //transaction.replace(R.id.fragment_container, fragment);
                     transaction.addToBackStack(null);
                     transaction.commit();
                 }

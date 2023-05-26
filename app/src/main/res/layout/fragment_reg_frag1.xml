@@ -15,14 +15,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginTop="80sp">
-        <TextView
-            android:id="@+id/imageerror"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            android:gravity="center"
-            android:textColor="#FF0000" />
+        android:layout_marginTop="100sp">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,19 +25,25 @@
                 android:id="@+id/roundImageView"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:background="@drawable/userreg"
                 app:civ_border_width="2dp"
                 app:civ_border_color="#FFFF"
                 app:civ_border_overlay="true"/>
+
             <TextView
                 android:id="@+id/uploadimagelink"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Upload Image"
                 android:gravity="center"
-                android:textSize="16dp"
-                android:layout_marginBottom="5dp" />
+                android:textSize="16dp"/>
         </LinearLayout>
+        <TextView
+            android:id="@+id/imageerror"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:gravity="center"
+            android:textColor="#FF0000" />
         <EditText
             android:id="@+id/fnametext"
             android:layout_width="match_parent"
@@ -54,7 +53,7 @@
             android:background="@drawable/edtdesign"
             android:hint="Enter First Name"
             android:minHeight="48dp"
-            android:textSize="12sp"
+            android:textSize="16sp"
             android:fontFamily="@font/robotomedium"
             android:inputType="text"
             android:layout_marginBottom="7sp"/>
@@ -68,7 +67,7 @@
             android:background="@drawable/edtdesign"
             android:hint="Enter Last Name"
             android:minHeight="48dp"
-            android:textSize="12sp"
+            android:textSize="16sp"
             android:fontFamily="@font/robotomedium"
             android:layout_marginBottom="7sp"/>
         <EditText
@@ -80,21 +79,14 @@
             android:hint="Enter Phone Number"
             android:inputType="number"
             android:minHeight="48dp"
-            android:textSize="12sp"
+            android:textSize="16sp"
             android:fontFamily="@font/robotomedium"/>
-        <TextView
-            android:id="@+id/t2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible"
-            android:textColor="#FF0000"
-            android:textSize="10sp"/>
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            >
+            android:layout_marginTop="2sp">
 
             <RadioButton
                 android:id="@+id/maleradiobtn"
@@ -107,6 +99,12 @@
                 android:layout_height="wrap_content"
                 android:text="Female"                />
         </RadioGroup>
+        <TextView
+            android:id="@+id/t2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            android:textColor="#FF0000"/>
 
         <Button
             android:id="@+id/button1"

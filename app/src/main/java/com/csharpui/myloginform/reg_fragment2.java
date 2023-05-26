@@ -2,9 +2,7 @@ package com.csharpui.myloginform;
 
 import android.os.Bundle;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Patterns;
@@ -14,11 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -97,12 +92,12 @@ public class reg_fragment2 extends Fragment {
                     Fragment fragment = new loginfragment();
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction()
                             .setCustomAnimations(
-                                    R.anim.slide_in,  // enter
-                                    R.anim.fade_out,  // exit
                                     R.anim.fade_in,   // popEnter
+                                    R.anim.fade_out,  // exit
+                                    R.anim.slide_in,  // enter
                                     R.anim.slide_out  // popExit
                             );
-                    transaction.replace(R.id.fragment_container, fragment);
+                    //transaction.replace(R.id.fragment_container, fragment);
                     transaction.addToBackStack(null);
                     transaction.commit();
                 }
@@ -111,36 +106,43 @@ public class reg_fragment2 extends Fragment {
         return view;
     }
     private boolean validate(){
+        boolean res = true;
         int spinnerselecteditempos = city.getSelectedItemPosition();
         if(!(spinnerselecteditempos > 0)){
             t1.setVisibility(View.VISIBLE);
             t1.setText("This field is required");
+            res = false;
         }
-
+        else{
+            t1.setVisibility(View.INVISIBLE);
+        }
         if(email.length() == 0 && pass.length() == 0 && spinnerselecteditempos == 0){
             email.setError("This field is required");
             pass.setError("This field is required");
             t1.setVisibility(View.VISIBLE);
             t1.setText("This field is required");
-            return false;
+            res = false;
         }
         if (email.length() == 0) {
             email.setError("This field is required");
-            pass.setError(null);
-            return false;
+            res = false;
         }
-        if (!(Patterns.EMAIL_ADDRESS.matcher(email.getText()).matches())) {
-            email.setError("Invalid Email Address");
-            pass.setError(null);
-            return false;
+        else{
+            if (!(Patterns.EMAIL_ADDRESS.matcher(email.getText()).matches())) {
+                email.setError("Invalid Email Address");
+                res = false;
+            }else {
+                email.setError(null);
+            }
         }
-
         if (pass.length() == 0) {
             pass.setError("This field is required");
-            email.setError(null);
-            return false;
+            res = false;
+        }
+        else {
+            pass.setError(null);
         }
         // after all validation return true.
-        return true;
+        return res;
     }
 }
